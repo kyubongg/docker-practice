@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  db:
+    image: mysql:8.0
+    container_name: my-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: bong1234
+      MYSQL_DATABASE: docker-practice-db
+      MYSQL_USER: bong
+      MYSQL_PASSWORD: bong123
+      TZ: Asia/Seoul
+    ports:
+      - "3307:3306"
+    volumes:
+      - ./mysql_data:/var/lib/mysql
+
+  app:
+    build: .
+    container_name: my-spring-app
+    ports:
+      - "8080:8080"
+    environment:
+      - DB_HOST=db
+      - DB_PORT=3306
+      - MYSQL_DATABASE=docker-practice-db
+      - DB_USER=bong
+      - DB_PASSWORD=bong123
+    depends_on:
+      - db
